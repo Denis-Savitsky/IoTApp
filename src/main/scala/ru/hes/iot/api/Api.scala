@@ -4,6 +4,8 @@ import cats.syntax.all._
 import org.http4s.HttpRoutes
 import ru.hes.iot.model.Condition
 import ru.hes.iot.service.StateHolder
+import org.http4s.server.middleware._
+import org.http4s.server.middleware.CORS
 import sttp.tapir.docs.openapi.OpenAPIDocsInterpreter
 import sttp.tapir.generic.auto._
 import sttp.tapir.json.circe._
@@ -41,7 +43,13 @@ object Api {
 
   val swaggerUIRoutes: HttpRoutes[RIO[Has[StateHolder] with Clock with Blocking, *]] = ZHttp4sServerInterpreter().from(SwaggerUI[RIO[Has[StateHolder] with Clock with Blocking, *]](openApiYml)).toRoutes
 
+  val cRoutes = CORS.policy
+    .withAllowHeadersAll
+    .withAllowMethodsAll
+    .withAllowOriginAll
+    .withAllowCredentials(false)
+    .apply(serverRoutes)
 
-  val allRoutes = serverRoutes <+> swaggerUIRoutes
+  val allRoutes = cRoutes <+> swaggerUIRoutes
 
 }

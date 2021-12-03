@@ -2,7 +2,7 @@
 val app = (project in file("."))
   .settings(
     name := "IoTApp",
-    version := "0.1.1" ,
+    version := "0.1.2" ,
     scalaVersion := "2.13.7"
   )
   .settings(
@@ -23,7 +23,7 @@ val app = (project in file("."))
   .settings(
     dockerBaseImage := "adoptopenjdk:11-jre-hotspot",
     Docker / packageName := "iot-service",
-    Docker / version := "0.1.1",
+    Docker / version := "0.1.2",
     dockerExposedPorts := Seq(8080),
     dockerRepository := Some("dsavitsky96"),
     dockerUpdateLatest := true,
